@@ -92,14 +92,26 @@
       if (os === 'Android') {
         window.location.href = androidUrl;
       } else if (os === 'iOS') {
-        // En iOS intentamos abrir el Custom Scheme o Universal Link.
-        // Si falla, tras 1.5 segundos redirige al fallbackUrl si existe.
-        window.location.href = iosUrl;
-        if (fallbackUrl) {
-          setTimeout(function() {
-            window.location.href = fallbackUrl;
-          }, 1500);
-        }
+        // 1. Cambiamos 'https' por 'itms-apps' para los links de la App Store
+        // Esto fuerza a iOS a abrir la tienda nativa sin cargar la web
+        let finalIosUrl = iosUrl.replace("https://apps.apple.com", "itms-apps://apps.apple.com");
+
+        // 2. Usamos un iframe oculto para lanzar el deeplink sin afectar el window principal
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = finalIosUrl;
+        document.body.appendChild(iframe);
+
+        // 3. Limpiamos el DOM y manejamos el fallback si es necesario
+        setTimeout(function() {
+          document.body.removeChild(iframe);
+          
+          if (fallbackUrl && finalIosUrl.includes("itms-apps") === false) {
+             // Solo ejecutar fallback en esquemas custom si fallan, 
+             // itms-apps rara vez falla porque la AppStore siempre está instalada.
+             window.location.href = fallbackUrl;
+          }
+        }, 1500);
       } else {
         // Si el usuario abre la página desde una PC/Mac
         if (fallbackUrl) {
