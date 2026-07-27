@@ -1,144 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pruebas Deeplinks Multiplataforma</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
+    .btn {
+      display: inline-block;
+      padding: 10px 15px;
+      margin: 5px 0;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn:hover { background-color: #0056b3; }
+    .ios { background-color: #343a40; }
+    .android { background-color: #28a745; }
+  </style>
+</head>
 <body>
-</br>
-</br>
-<h2>&nbsp &nbspEJEMPLO DE DEFERRED DEEPLINK PARA INSTALACION DE MI CLARO ANDROID</h2>
-<ol>	
-	</br>
-	<li>
-		<a href="market://details?id=com.claro.miclaro&amp;url=link://com.claro/action?key=recargas">
-			<code> 
-				CENAM -> market://details?
-				id=com.claro.miclaro&amp;
-				url=link://com.claro/action?
-				key=RecargasAnonimas
-			</code>
-		</a>
-	</li>
-	</br>
-	<li>
-		<a href="market://details?id=com.miclaro.app&amp;url=link://com.claro/action?key=recargas">
-			<code>
-				CHILE -> market://details?
-				id=com.miclaro.app&amp;
-				url=link://com.claro/action?
-				key=RecargasAnonimas
-			</code>
-		</a>
-	</li>
-	</br>
-	<li>
-		<a href="market://details?id=com.claroecuador.miclaro&amp;url=link://com.claro/action?key=recargas">
-			<code>
-				ECUADOR -> market://details?
-				id=com.claroecuador.miclaroo&amp;
-				url=link://com.claro/action?
-				key=RecargasAnonimass
-		        </code>
-		</a>
-	</li>
-	</br>
-</ol>
-</br></br>
-  
-<h2>&nbsp &nbspEJEMPLO DE DEFERRED DEEPLINK PARA INSTALACION DE MI CLARO IOS</h2>
- <ol>	
-	</br>
-	<li>
-		<a href="https://apps.apple.com/gt/app/mi-claro-centroamérica/id953328601">
-			<code> 
-				CENAM -> https://apps.apple.com/gt/app/mi-claro-centroamérica/id953328601
-			</code>
-		</a>
-	</li>
-	</br>
-	<li>
-		<a href="https://apps.apple.com/cl/app/mi-claro/id1319458144">
-			<code>
-				CHILE -> https://apps.apple.com/cl/app/mi-claro/id1319458144
-			</code>
-		</a>
-	</li>
-	</br>
-	<li>
-		<a href="https://apps.apple.com/ec/app/mi-claro-ecuador/id603232811">
-			<code>
-				ECUADOR -> https://apps.apple.com/ec/app/mi-claro-ecuador/id603232811
-		        </code>
-		</a>
-	</li>
-	</br>
-</ol>
 
-<h2>EJEMPLOS DE INTENTS URL PARA TEST ANDROID</h2>Add commentMore actions
- <ol>	
-	</br>
-	<li>
-		<a href="whatsapp://send?phone=5215573825171&text=Hola">
-			<code> 
-				WHATSAPP
-			</code>
-		</a>
-	</li>
-	</br>
-	<li>
-		<a href="mailto:correo@ejemplo.com?subject=Prueba&body=Hola">
-			<code>
-				MAILTO
-			</code>
-		</a>
-	</li>
-	</br>
-	<li>
-		<a href="intent://maps.google.com/maps?q=restaurantes+CDMX#Intent;scheme=https;package=com.google.android.apps.maps;end;">
-			<code>
-				MAPS
-		        </code>
-		</a>
-	</li>
-	</br>
-	<li>
-		<a href="intent://mercadolibre.com.mx/#Intent;scheme=https;package=com.mercadolibre;end;">
-			<code>
-				MERCADO_LIBRE
-		        </code>
-		</a>
-	</li>
-	</br>
-	<li>
-		<a href="intens:  //mercadolibre.com.ec/#Intent;scheme=https;package=com.mercadolibre;end;">
-			<code>
-				MERCADO_LIBRE_ERROR
-		        </code>
-		</a>
-	</li>
-	</br>
-	<li>
-		<a href="fb://facewebmodal/f?href=https://www.facebook.com/">
-			<code>
-				FACEBOOK
-		        </code>
-		</a>
-	</li>
-	</br>
-	<li>
-		<a href="intent://home#Intent;scheme=bbva;package=com.bbva.bbvacontigo;end">
-			<code>
-				BBVA
-		        </code>
-		</a>
-	</li>
-	</br>
-	<li>
-		<a href="intent://anything#Intent;scheme=customscheme;package=com.ejemplo.appfalsa;S.test_key=test_value;S.browser_fallback_url=https%3A%2F%2Fwww.google.com;end">
-			<code>
-				TEST
-		        </code>
-		</a>
-	</li>
-	</br>
-</ol>
-</br></br> 
+  <h2>DEEPLINKS DINÁMICOS (ANDROID E iOS)</h2>
+  <p>Haz clic en cualquier enlace. El sistema detectará automáticamente si estás en Android o iOS para abrir la app o la tienda correspondiente.</p>
+
+  <h3>Mi Claro</h3>
+  <button class="btn" onclick="openApp('claro_cenam')">Abrir / Instalar Mi Claro CENAM</button><br>
+  <button class="btn" onclick="openApp('claro_chile')">Abrir / Instalar Mi Claro CHILE</button><br>
+  <button class="btn" onclick="openApp('claro_ecuador')">Abrir / Instalar Mi Claro ECUADOR</button><br>
+
+  <h3>Otras Apps de Prueba</h3>
+  <button class="btn android" onclick="openApp('whatsapp')">WhatsApp</button><br>
+  <button class="btn android" onclick="openApp('maps')">Google Maps</button><br>
+  <button class="btn android" onclick="openApp('mercadolibre')">Mercado Libre</button><br>
+
+  <script>
+    function getOS() {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      if (/android/i.test(userAgent)) return 'Android';
+      if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) return 'iOS';
+      return 'Desktop';
+    }
+
+    function openApp(target) {
+      const os = getOS();
+      let androidUrl = "";
+      let iosUrl = "";
+      let fallbackUrl = "";
+
+      switch (target) {
+        case 'claro_cenam':
+          // Android usa Intent o Market. iOS usa el Universal Link o App Store scheme.
+          androidUrl = "intent://com.claro/action?key=RecargasAnonimas#Intent;scheme=link;package=com.claro.miclaro;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.claro.miclaro;end;";
+          iosUrl = "https://apps.apple.com/gt/app/mi-claro-centroam%C3%A9rica/id953328601";
+          break;
+
+        case 'claro_chile':
+          androidUrl = "intent://com.claro/action?key=RecargasAnonimas#Intent;scheme=link;package=com.miclaro.app;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.miclaro.app;end;";
+          iosUrl = "https://apps.apple.com/cl/app/mi-claro/id1319458144";
+          break;
+
+        case 'claro_ecuador':
+          androidUrl = "intent://com.claro/action?key=RecargasAnonimas#Intent;scheme=link;package=com.claroecuador.miclaro;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.claroecuador.miclaro;end;";
+          iosUrl = "https://apps.apple.com/ec/app/mi-claro-ecuador/id603232811";
+          break;
+
+        case 'whatsapp':
+          // Funciona en ambos, pero para iOS es ideal usar el Scheme directo o la API web
+          androidUrl = "whatsapp://send?phone=5215573825171&text=Hola";
+          iosUrl = "whatsapp://send?phone=5215573825171&text=Hola";
+          fallbackUrl = "https://wa.me/5215573825171?text=Hola";
+          break;
+
+        case 'maps':
+          androidUrl = "intent://maps.google.com/maps?q=restaurantes+CDMX#Intent;scheme=https;package=com.google.android.apps.maps;end;";
+          // iOS abre Apple Maps nativo o Google Maps si está instalado vía esquema comgooglemaps://
+          iosUrl = "comgooglemaps://?q=restaurantes+CDMX";
+          fallbackUrl = "https://maps.google.com/maps?q=restaurantes+CDMX";
+          break;
+
+        case 'mercadolibre':
+          androidUrl = "intent://mercadolibre.com.mx/#Intent;scheme=https;package=com.mercadolibre;end;";
+          iosUrl = "mercadolibre://";
+          fallbackUrl = "https://www.mercadolibre.com.mx";
+          break;
+      }
+
+      // Ejecutar la redirección según la plataforma
+      if (os === 'Android') {
+        window.location.href = androidUrl;
+      } else if (os === 'iOS') {
+        // En iOS intentamos abrir el Custom Scheme o Universal Link.
+        // Si falla, tras 1.5 segundos redirige al fallbackUrl si existe.
+        window.location.href = iosUrl;
+        if (fallbackUrl) {
+          setTimeout(function() {
+            window.location.href = fallbackUrl;
+          }, 1500);
+        }
+      } else {
+        // Si el usuario abre la página desde una PC/Mac
+        if (fallbackUrl) {
+          window.location.href = fallbackUrl;
+        } else {
+          alert("Estás en Desktop. Este enlace requiere un dispositivo móvil (" + os + ").");
+        }
+      }
+    }
+  </script>
 </body>
 </html>
