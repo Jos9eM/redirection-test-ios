@@ -1,128 +1,152 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pruebas Deeplinks Multiplataforma</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
-    .btn {
-      display: inline-block;
-      padding: 10px 15px;
-      margin: 5px 0;
-      background-color: #007bff;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .btn:hover { background-color: #0056b3; }
-    .ios { background-color: #343a40; }
-    .android { background-color: #28a745; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pruebas Deeplinks</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    padding:20px;
+}
+
+a.btn{
+    display:inline-block;
+    margin:8px 0;
+    padding:12px 18px;
+    background:#007AFF;
+    color:#FFF;
+    text-decoration:none;
+    border-radius:6px;
+}
+
+a.btn:hover{
+    opacity:.9;
+}
+
+h3{
+    margin-top:30px;
+}
+</style>
+
 </head>
+
 <body>
 
-  <h2>DEEPLINKS DINÁMICOS (ANDROID E iOS)</h2>
-  <p>Haz clic en cualquier enlace. El sistema detectará automáticamente si estás en Android o iOS para abrir la app o la tienda correspondiente.</p>
+<h2>Pruebas Deeplinks</h2>
 
-  <h3>Mi Claro</h3>
-  <button class="btn" onclick="openApp('claro_cenam')">Abrir / Instalar Mi Claro CENAM</button><br>
-  <button class="btn" onclick="openApp('claro_chile')">Abrir / Instalar Mi Claro CHILE</button><br>
-  <button class="btn" onclick="openApp('claro_ecuador')">Abrir / Instalar Mi Claro ECUADOR</button><br>
+<p>
+El enlace se construye dependiendo del sistema operativo.
+</p>
 
-  <h3>Otras Apps de Prueba</h3>
-  <button class="btn android" onclick="openApp('whatsapp')">WhatsApp</button><br>
-  <button class="btn android" onclick="openApp('maps')">Google Maps</button><br>
-  <button class="btn android" onclick="openApp('mercadolibre')">Mercado Libre</button><br>
+<h3>Mi Claro</h3>
 
-  <script>
-    function getOS() {
-      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-      if (/android/i.test(userAgent)) return 'Android';
-      if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) return 'iOS';
-      return 'Desktop';
+<a id="claro_cenam" class="btn" target="_blank" rel="noopener noreferrer">
+Mi Claro CENAM
+</a>
+
+<br>
+
+<a id="claro_chile" class="btn" target="_blank" rel="noopener noreferrer">
+Mi Claro Chile
+</a>
+
+<br>
+
+<a id="claro_ecuador" class="btn" target="_blank" rel="noopener noreferrer">
+Mi Claro Ecuador
+</a>
+
+<h3>Apps</h3>
+
+<a id="whatsapp" class="btn" target="_blank" rel="noopener noreferrer">
+WhatsApp
+</a>
+
+<br>
+
+<a id="maps" class="btn" target="_blank" rel="noopener noreferrer">
+Google Maps
+</a>
+
+<br>
+
+<a id="mercadolibre" class="btn" target="_blank" rel="noopener noreferrer">
+Mercado Libre
+</a>
+
+<script>
+
+function getOS(){
+
+    const ua = navigator.userAgent;
+
+    if(/android/i.test(ua))
+        return "android";
+
+    if(/iPad|iPhone|iPod/.test(ua))
+        return "ios";
+
+    return "desktop";
+}
+
+const LINKS={
+
+    claro_cenam:{
+        android:"intent://com.claro/action?key=RecargasAnonimas#Intent;scheme=link;package=com.claro.miclaro;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.claro.miclaro;end;",
+        ios:"https://apps.apple.com/gt/app/mi-claro-centroam%C3%A9rica/id953328601"
+    },
+
+    claro_chile:{
+        android:"intent://com.claro/action?key=RecargasAnonimas#Intent;scheme=link;package=com.miclaro.app;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.miclaro.app;end;",
+        ios:"https://apps.apple.com/cl/app/mi-claro/id1319458144"
+    },
+
+    claro_ecuador:{
+        android:"intent://com.claro/action?key=RecargasAnonimas#Intent;scheme=link;package=com.claroecuador.miclaro;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.claroecuador.miclaro;end;",
+        ios:"https://apps.apple.com/ec/app/mi-claro-ecuador/id603232811"
+    },
+
+    whatsapp:{
+        android:"intent://send?phone=5215573825171&text=Hola#Intent;scheme=whatsapp;package=com.whatsapp;end;",
+        ios:"https://wa.me/5215573825171?text=Hola"
+    },
+
+    maps:{
+        android:"intent://maps.google.com/maps?q=restaurantes+CDMX#Intent;scheme=https;package=com.google.android.apps.maps;end;",
+        ios:"https://maps.google.com/maps?q=restaurantes+CDMX"
+    },
+
+    mercadolibre:{
+        android:"intent://mercadolibre.com.mx/#Intent;scheme=https;package=com.mercadolibre;end;",
+        ios:"https://www.mercadolibre.com.mx"
     }
 
-    function openApp(target) {
-      const os = getOS();
-      let androidUrl = "";
-      let iosUrl = "";
-      let fallbackUrl = "";
+};
 
-      switch (target) {
-        case 'claro_cenam':
-          // Android usa Intent o Market. iOS usa el Universal Link o App Store scheme.
-          androidUrl = "intent://com.claro/action?key=RecargasAnonimas#Intent;scheme=link;package=com.claro.miclaro;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.claro.miclaro;end;";
-          iosUrl = "https://apps.apple.com/gt/app/mi-claro-centroam%C3%A9rica/id953328601";
-          break;
+const os=getOS();
 
-        case 'claro_chile':
-          androidUrl = "intent://com.claro/action?key=RecargasAnonimas#Intent;scheme=link;package=com.miclaro.app;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.miclaro.app;end;";
-          iosUrl = "https://apps.apple.com/cl/app/mi-claro/id1319458144";
-          break;
+Object.keys(LINKS).forEach(id=>{
 
-        case 'claro_ecuador':
-          androidUrl = "intent://com.claro/action?key=RecargasAnonimas#Intent;scheme=link;package=com.claroecuador.miclaro;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.claroecuador.miclaro;end;";
-          iosUrl = "https://apps.apple.com/ec/app/mi-claro-ecuador/id603232811";
-          break;
+    const element=document.getElementById(id);
 
-        case 'whatsapp':
-          // Funciona en ambos, pero para iOS es ideal usar el Scheme directo o la API web
-          androidUrl = "whatsapp://send?phone=5215573825171&text=Hola";
-          iosUrl = "whatsapp://send?phone=5215573825171&text=Hola";
-          fallbackUrl = "https://wa.me/5215573825171?text=Hola";
-          break;
+    if(!element)
+        return;
 
-        case 'maps':
-          androidUrl = "intent://maps.google.com/maps?q=restaurantes+CDMX#Intent;scheme=https;package=com.google.android.apps.maps;end;";
-          // iOS abre Apple Maps nativo o Google Maps si está instalado vía esquema comgooglemaps://
-          iosUrl = "comgooglemaps://?q=restaurantes+CDMX";
-          fallbackUrl = "https://maps.google.com/maps?q=restaurantes+CDMX";
-          break;
+    if(os==="android")
+        element.href=LINKS[id].android;
 
-        case 'mercadolibre':
-          androidUrl = "intent://mercadolibre.com.mx/#Intent;scheme=https;package=com.mercadolibre;end;";
-          iosUrl = "mercadolibre://";
-          fallbackUrl = "https://www.mercadolibre.com.mx";
-          break;
-      }
+    else if(os==="ios")
+        element.href=LINKS[id].ios;
 
-      // Ejecutar la redirección según la plataforma
-      if (os === 'Android') {
-        window.location.href = androidUrl;
-       } else if (os === 'iOS') {
-        // 1. Cambiamos 'https' por 'itms-apps' para forzar la apertura de la tienda
-        let finalIosUrl = iosUrl.replace("https://apps.apple.com", "itms-apps://apps.apple.com");
+    else
+        element.href=LINKS[id].ios;
 
-        // 2. En lugar de un iframe (bloqueado por WebKit), creamos un tag <a> dinámico
-        const link = document.createElement('a');
-        link.href = finalIosUrl;
-        // target="_top" ayuda a indicarle al WebView que es una navegación de nivel superior
-        link.target = '_top'; 
-        document.body.appendChild(link);
-        
-        // 3. Simulamos el clic del usuario
-        link.click();
-        
-        // 4. Limpiamos el DOM
-        document.body.removeChild(link);
+});
 
-        // 5. Manejo del fallback si no es link de App Store
-        if (fallbackUrl && !finalIosUrl.includes("itms-apps")) {
-          setTimeout(function() {
-            window.location.href = fallbackUrl;
-          }, 1500);
-        }
-      } else {
-        // Si el usuario abre la página desde una PC/Mac
-        if (fallbackUrl) {
-          window.location.href = fallbackUrl;
-        } else {
-          alert("Estás en Desktop. Este enlace requiere un dispositivo móvil (" + os + ").");
-        }
-      }
-    }
-  </script>
+</script>
+
 </body>
 </html>
