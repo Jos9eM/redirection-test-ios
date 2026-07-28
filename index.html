@@ -91,27 +91,29 @@
       // Ejecutar la redirección según la plataforma
       if (os === 'Android') {
         window.location.href = androidUrl;
-      } else if (os === 'iOS') {
-        // 1. Cambiamos 'https' por 'itms-apps' para los links de la App Store
-        // Esto fuerza a iOS a abrir la tienda nativa sin cargar la web
+       } else if (os === 'iOS') {
+        // 1. Cambiamos 'https' por 'itms-apps' para forzar la apertura de la tienda
         let finalIosUrl = iosUrl.replace("https://apps.apple.com", "itms-apps://apps.apple.com");
 
-        // 2. Usamos un iframe oculto para lanzar el deeplink sin afectar el window principal
-        const iframe = document.createElement('iframe');
-        iframe.style.display = 'none';
-        iframe.src = finalIosUrl;
-        document.body.appendChild(iframe);
+        // 2. En lugar de un iframe (bloqueado por WebKit), creamos un tag <a> dinámico
+        const link = document.createElement('a');
+        link.href = finalIosUrl;
+        // target="_top" ayuda a indicarle al WebView que es una navegación de nivel superior
+        link.target = '_top'; 
+        document.body.appendChild(link);
+        
+        // 3. Simulamos el clic del usuario
+        link.click();
+        
+        // 4. Limpiamos el DOM
+        document.body.removeChild(link);
 
-        // 3. Limpiamos el DOM y manejamos el fallback si es necesario
-        setTimeout(function() {
-          document.body.removeChild(iframe);
-          
-          if (fallbackUrl && finalIosUrl.includes("itms-apps") === false) {
-             // Solo ejecutar fallback en esquemas custom si fallan, 
-             // itms-apps rara vez falla porque la AppStore siempre está instalada.
-             window.location.href = fallbackUrl;
-          }
-        }, 1500);
+        // 5. Manejo del fallback si no es link de App Store
+        if (fallbackUrl && !finalIosUrl.includes("itms-apps")) {
+          setTimeout(function() {
+            window.location.href = fallbackUrl;
+          }, 1500);
+        }
       } else {
         // Si el usuario abre la página desde una PC/Mac
         if (fallbackUrl) {
